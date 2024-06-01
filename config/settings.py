@@ -30,7 +30,7 @@ SECRET_KEY = str(os.getenv('MANAGER_SECRET_KEY'))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = eval(os.getenv('MANAGER_DEBUG'))
 
-ALLOWED_HOSTS = str(os.getenv('ALLOWED_HOSTS')).split('|')
+ALLOWED_HOSTS = str(os.getenv('MANAGER_ALLOWED_HOSTS')).split('|')
 
 # Application definition
 
