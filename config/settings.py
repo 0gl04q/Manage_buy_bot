@@ -14,6 +14,9 @@ from pathlib import Path
 from django.contrib import messages
 
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,12 +25,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('MANAGER_DJANGO_SECRET_KEY')
+SECRET_KEY = str(os.getenv('MANAGER_SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = eval(os.getenv('MANAGER_DJANGO_DEBUG'))
+DEBUG = eval(os.getenv('MANAGER_DEBUG'))
 
-ALLOWED_HOSTS = os.getenv('MANAGER_ALLOWED_HOSTS').split('|')
+ALLOWED_HOSTS = str(os.getenv('ALLOWED_HOSTS')).split('|')
 
 # Application definition
 
@@ -142,11 +145,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 # Internal ips settings
 
-INTERNAL_IPS = os.getenv('MANAGER_INTERNAL_IPS').split('|')
-
+INTERNAL_IPS = str(os.getenv('INTERNAL_IPS')).split('|')
 
 # Tags for bot
 
@@ -158,7 +159,6 @@ MESSAGE_TAGS = {
     messages.ERROR: 'alert-danger',
 }
 
-
 # Caches settings
 
 CACHES = {
@@ -167,7 +167,6 @@ CACHES = {
         'LOCATION': str(os.getenv('CACHES_LOCATION'))
     }
 }
-
 
 # CSRF settings
 
