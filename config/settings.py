@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 from django.contrib import messages
 
+import os
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,12 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-g)dw12$&+ya&rke=es!98#vf(grb^=bxo*%8%k8ld93i49j9q8'
+SECRET_KEY = os.getenv('MANAGER_DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = eval(os.getenv('MANAGER_DJANGO_DEBUG'))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv('MANAGER_ALLOWED_HOSTS').split('|')
 
 # Application definition
 
@@ -36,10 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'django_bootstrap5',
     'django_extensions',
     'debug_toolbar',
     'rest_framework',
+
     "apps.orders.apps.OrderConfig",
     "apps.ordersAPI.apps.OrdersAPIConfig"
 ]
@@ -86,8 +90,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': str(os.getenv('SQL_ENGINE')),
+        'NAME': str(os.getenv('MANAGER_POSTGRES_DB')),
+        'USER': str(os.getenv('MANAGER_POSTGRES_USER')),
+        'PASSWORD': str(os.getenv('MANAGER_POSTGRES_PASSWORD')),
+        'HOST': str(os.getenv('SQL_HOST')),
+        'PORT': str(os.getenv('SQL_PORT'))
     }
 }
 
@@ -134,7 +142,13 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-INTERNAL_IPS = ['127.0.0.1', ]
+
+# Internal ips settings
+
+INTERNAL_IPS = os.getenv('MANAGER_INTERNAL_IPS').split('|')
+
+
+# Tags for bot
 
 MESSAGE_TAGS = {
     messages.DEBUG: 'alert-info',
@@ -143,3 +157,18 @@ MESSAGE_TAGS = {
     messages.WARNING: 'alert-warning',
     messages.ERROR: 'alert-danger',
 }
+
+
+# Caches settings
+
+CACHES = {
+    'default': {
+        'BACKEND': str(os.getenv('CACHES_BACKEND')),
+        'LOCATION': str(os.getenv('CACHES_LOCATION'))
+    }
+}
+
+
+# CSRF settings
+
+CSRF_TRUSTED_ORIGINS = str(os.getenv('CSRF_TRUSTED_ORIGINS')).split('|')
