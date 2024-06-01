@@ -1,6 +1,7 @@
 import requests
+import os
 
-BOT_TOKEN = '6759444178:AAFlLugd9_xNgvD8nZEZDvah0faeG9XOQAQ'
+BOT_TOKEN = os.getenv('BOT_TOKEN')
 
 
 def send_message(chat_id, text):
